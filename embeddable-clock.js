@@ -1,11 +1,27 @@
 (function() {
+  // Inject Google Font
+  const fontLink = document.createElement('link');
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap';
+  fontLink.rel = 'stylesheet';
+  document.head.appendChild(fontLink);
+
   // CSS Styles
   const styles = `
-    #clock-widget-container { /* Use a more specific container */
+    #clock-widget-container {
+      font-family: 'Orbitron', sans-serif; /* Use Orbitron font */
       font-size: 3rem;
-      font-family: monospace;
+      font-weight: bold;
+      color: #0f0; /* Green digital color */
+      background: linear-gradient(145deg, #232323, #383838); /* Dark gradient background */
+      padding: 20px 40px;
+      border-radius: 10px;
+      display: inline-block; /* Fit content size */
       text-align: center;
-      /* Remove margin-top, let the user control layout */
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5), /* Outer shadow */
+                  inset -2px -2px 5px rgba(0, 0, 0, 0.3), /* Inner shadow top-left */
+                  inset 2px 2px 5px rgba(255, 255, 255, 0.1); /* Inner shadow bottom-right */
+      text-shadow: 0 0 5px #0f0, 0 0 10px #0f0; /* Glow effect */
+      border: 1px solid #444;
     }
   `;
 
