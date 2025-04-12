@@ -45,8 +45,29 @@
             rgba(0, 255, 65, 0.15) 1px,
             transparent 1px,
             transparent 2px
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            rgba(0, 255, 65, 0.1) 0%,
+            transparent 50%
           );
         animation: matrix-rain 20s linear infinite;
+        position: relative;
+        overflow: hidden;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 100%;
+          background: linear-gradient(
+            rgba(0, 255, 65, 0.1) 0%,
+            rgba(0, 255, 65, 0.2) 50%,
+            rgba(0, 255, 65, 0) 100%
+          );
+          animation: matrix-scan 2s linear infinite;
+        }
       `
     },
     'vapor-wave': {
@@ -184,18 +205,42 @@
     .clock-size-extra-large { font-size: ${sizes['extra-large']}; }
 
     @keyframes matrix-rain {
-      0% { background-position: 0 0, 0 0; }
-      100% { background-position: 0 1000px, 0 1000px; }
+      0% { background-position: 0 0, 0 0, 0 0; }
+      100% { background-position: 0 1000px, 0 1000px, 0 0; }
+    }
+
+    @keyframes matrix-scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
     }
 
     @keyframes sunset-glow {
-      0% { filter: brightness(1); }
-      100% { filter: brightness(1.2); }
+      0% { 
+        filter: brightness(1);
+        background-position: 0 0, 50% 150%;
+      }
+      50% {
+        filter: brightness(1.2);
+        background-position: 0 0, 50% 140%;
+      }
+      100% { 
+        filter: brightness(1);
+        background-position: 0 0, 50% 150%;
+      }
     }
 
     @keyframes grid-move {
-      0% { background-position: 0 0, 0 0, 0 0; }
-      100% { background-position: 0 0, 0 100%, 100% 0; }
+      0% { 
+        background-position: 0 0, 0 0, 0 0;
+        transform: rotateX(45deg) translateZ(0px);
+      }
+      50% {
+        transform: rotateX(45deg) translateZ(20px);
+      }
+      100% { 
+        background-position: 0 0, 40px 100%, 100% 40px;
+        transform: rotateX(45deg) translateZ(0px);
+      }
     }
   `;
 
