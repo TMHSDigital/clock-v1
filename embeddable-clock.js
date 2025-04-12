@@ -48,7 +48,8 @@
       font-weight: bold;
       padding: 20px 40px;
       border-radius: 10px;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       text-align: center;
       box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5),
                   inset -2px -2px 5px rgba(0, 0, 0, 0.3),
@@ -58,13 +59,42 @@
       transition: all 0.3s ease;
     }
 
-    .clock-widget span {
+    .clock-digit {
       display: inline-block;
-      transition: opacity 0.3s ease;
+      min-width: 1ch;
+      transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
     }
 
-    .clock-widget.updating span {
-      opacity: 0.5;
+    .clock-digit.changing {
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+
+    .clock-separator {
+      display: inline-block;
+      margin: 0 0.1em;
+      opacity: 1;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .clock-separator.pulse {
+      animation: separatorPulse 1s infinite;
+    }
+
+    @keyframes separatorPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .clock-period {
+      margin-left: 0.3em;
+      display: inline-block;
+      transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    }
+
+    .clock-period.changing {
+      opacity: 0;
+      transform: translateY(-2px);
     }
     
     /* Size variations */
@@ -93,8 +123,29 @@
       
       this.clockElement = document.createElement('div');
       this.clockElement.className = `clock-widget clock-size-${this.config.size}`;
-      this.timeElement = document.createElement('span');
-      this.clockElement.appendChild(this.timeElement);
+      
+      // Create spans for hours, minutes, seconds, and period
+      this.hourSpan = this.createDigitSpan('hour');
+      this.minuteSpan = this.createDigitSpan('minute');
+      this.secondSpan = this.createDigitSpan('second');
+      this.periodSpan = document.createElement('span');
+      this.periodSpan.className = 'clock-period';
+      
+      // Create separators
+      this.separator1 = this.createSeparator();
+      this.separator2 = this.createSeparator();
+      
+      // Assemble the clock
+      this.clockElement.appendChild(this.hourSpan);
+      this.clockElement.appendChild(this.separator1);
+      this.clockElement.appendChild(this.minuteSpan);
+      if (this.config.showSeconds) {
+        this.clockElement.appendChild(this.separator2);
+        this.clockElement.appendChild(this.secondSpan);
+      }
+      if (this.config.format === '12h') {
+        this.clockElement.appendChild(this.periodSpan);
+      }
       
       this.applyTheme();
       this.container.appendChild(this.clockElement);
@@ -102,6 +153,29 @@
       this.updateClock = this.updateClock.bind(this);
       this.interval = setInterval(this.updateClock, 1000);
       this.updateClock();
+    }
+
+    createDigitSpan(type) {
+      const span = document.createElement('span');
+      span.className = `clock-digit clock-${type}`;
+      return span;
+    }
+
+    createSeparator() {
+      const sep = document.createElement('span');
+      sep.className = 'clock-separator';
+      sep.textContent = ':';
+      return sep;
+    }
+
+    updateDigit(span, newValue, oldValue) {
+      if (newValue !== oldValue) {
+        span.classList.add('changing');
+        setTimeout(() => {
+          span.textContent = newValue;
+          span.classList.remove('changing');
+        }, 200);
+      }
     }
 
     applyTheme() {
@@ -116,28 +190,36 @@
 
     updateClock() {
       const now = new Date();
-      this.clockElement.classList.add('updating');
+      let hours = now.getHours();
+      let period = '';
       
-      const options = {
-        hour: 'numeric',
-        minute: '2-digit',
-        second: this.config.showSeconds ? '2-digit' : undefined,
-        hour12: this.config.format === '12h'
-      };
-      
-      let timeString = now.toLocaleTimeString(undefined, options);
-      
-      // Remove seconds if not showing them
-      if (!this.config.showSeconds) {
-        timeString = timeString.replace(/:\d\d /, ' ').replace(/:\d\d$/, '');
+      // Handle 12/24 hour format
+      if (this.config.format === '12h') {
+        period = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // Convert 0 to 12
       }
       
-      this.timeElement.textContent = timeString;
+      // Format numbers
+      const hoursStr = hours.toString().padStart(2, '0');
+      const minutesStr = now.getMinutes().toString().padStart(2, '0');
+      const secondsStr = now.getSeconds().toString().padStart(2, '0');
       
-      // Remove updating class after transition
-      setTimeout(() => {
-        this.clockElement.classList.remove('updating');
-      }, 100);
+      // Update digits with animation if they've changed
+      this.updateDigit(this.hourSpan, hoursStr, this.hourSpan.textContent);
+      this.updateDigit(this.minuteSpan, minutesStr, this.minuteSpan.textContent);
+      if (this.config.showSeconds) {
+        this.updateDigit(this.secondSpan, secondsStr, this.secondSpan.textContent);
+      }
+      if (this.config.format === '12h') {
+        this.updateDigit(this.periodSpan, period, this.periodSpan.textContent);
+      }
+      
+      // Pulse the separators
+      this.separator1.classList.toggle('pulse', this.config.showSeconds);
+      if (this.config.showSeconds) {
+        this.separator2.classList.toggle('pulse', true);
+      }
     }
 
     destroy() {
