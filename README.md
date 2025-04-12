@@ -30,6 +30,15 @@ Add this to your HTML:
 
 ## ⚙️ Customization Options
 
+### Navigation Features
+The demo page includes convenient navigation features:
+- Desktop: Fixed sidebar navigation to quickly jump between themes
+- Mobile: Horizontal scrollable menu at the bottom of the screen
+- Back to top button appears when scrolling
+- Smooth scrolling animations
+- Visual indicators for current theme section
+- Automatic mobile/desktop layout switching
+
 ### Themes
 ```html
 data-theme="theme-name"
