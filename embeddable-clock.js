@@ -30,6 +30,85 @@
       background: 'linear-gradient(145deg, #2a2a2a, #3a3a3a)',
       textShadow: '0 0 5px rgba(255,255,255,0.5)',
       borderColor: '#444'
+    },
+    'matrix': {
+      color: '#00ff41',
+      background: 'linear-gradient(180deg, #000000, #001100)',
+      textShadow: '0 0 5px #00ff41, 0 0 15px #00ff41, 0 0 25px #00ff41',
+      borderColor: '#003300',
+      extraStyles: `
+        background-image: 
+          linear-gradient(180deg, #000000, #001100),
+          repeating-linear-gradient(
+            0deg,
+            rgba(0, 255, 65, 0.15) 0px,
+            rgba(0, 255, 65, 0.15) 1px,
+            transparent 1px,
+            transparent 2px
+          );
+        animation: matrix-rain 20s linear infinite;
+      `
+    },
+    'vapor-wave': {
+      color: '#ff71ce',
+      background: 'linear-gradient(45deg, #590d82, #b91372)',
+      textShadow: '0 0 5px #ff71ce, 0 0 15px #ff71ce, 3px 3px 0 #01cdfe',
+      borderColor: '#b91372',
+      extraStyles: `
+        background-image: 
+          linear-gradient(45deg, #590d82, #b91372),
+          linear-gradient(90deg, 
+            rgba(255, 113, 206, 0.1) 0px,
+            rgba(1, 205, 254, 0.1) 5px,
+            transparent 5px,
+            transparent 10px
+          );
+        background-size: 100% 100%, 10px 100%;
+      `
+    },
+    'sunset': {
+      color: '#ffffff',
+      background: 'linear-gradient(0deg, #ff6b6b, #feca57, #ff9f43)',
+      textShadow: '0 0 5px #ff6b6b, 0 0 15px #ff9f43',
+      borderColor: '#ff9f43',
+      extraStyles: `
+        background-image: 
+          linear-gradient(0deg, #ff6b6b, #feca57, #ff9f43),
+          radial-gradient(
+            circle at 50% 150%,
+            #ff6b6b 0%,
+            transparent 50%
+          );
+        animation: sunset-glow 4s ease infinite alternate;
+      `
+    },
+    'synthwave': {
+      color: '#ff00ff',
+      background: 'linear-gradient(180deg, #000033, #1a0033)',
+      textShadow: '0 0 5px #ff00ff, 0 0 15px #ff00ff, 3px 3px 0 #00ffff',
+      borderColor: '#ff00ff',
+      extraStyles: `
+        background-image: 
+          linear-gradient(180deg, #000033, #1a0033),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 0, 255, 0.1) 0px,
+            rgba(255, 0, 255, 0.1) 1px,
+            transparent 1px,
+            transparent 40px
+          ),
+          repeating-linear-gradient(
+            180deg,
+            rgba(255, 0, 255, 0.1) 0px,
+            rgba(255, 0, 255, 0.1) 1px,
+            transparent 1px,
+            transparent 40px
+          );
+        background-size: 100% 100%, 100% 100%, 100% 100%;
+        perspective: 1000px;
+        transform: rotateX(45deg);
+        animation: grid-move 10s linear infinite;
+      `
     }
   };
 
@@ -57,6 +136,7 @@
       border-width: 1px;
       border-style: solid;
       transition: all 0.3s ease;
+      background-blend-mode: overlay;
     }
 
     .clock-digit {
@@ -102,6 +182,21 @@
     .clock-size-medium { font-size: ${sizes.medium}; }
     .clock-size-large { font-size: ${sizes.large}; }
     .clock-size-extra-large { font-size: ${sizes['extra-large']}; }
+
+    @keyframes matrix-rain {
+      0% { background-position: 0 0, 0 0; }
+      100% { background-position: 0 1000px, 0 1000px; }
+    }
+
+    @keyframes sunset-glow {
+      0% { filter: brightness(1); }
+      100% { filter: brightness(1.2); }
+    }
+
+    @keyframes grid-move {
+      0% { background-position: 0 0, 0 0, 0 0; }
+      100% { background-position: 0 0, 0 100%, 100% 0; }
+    }
   `;
 
   // Inject CSS into the head
@@ -186,6 +281,11 @@
         textShadow: theme.textShadow,
         borderColor: theme.borderColor
       });
+      
+      // Apply extra theme-specific styles if they exist
+      if (theme.extraStyles) {
+        this.clockElement.style.cssText += theme.extraStyles;
+      }
     }
 
     updateClock() {
