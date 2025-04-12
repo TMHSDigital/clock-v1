@@ -4,23 +4,84 @@
   <title>Embeddable Clock Example</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #1a1a1a;
+      color: #fff;
+    }
+    
+    h1, h2 { color: #fff; }
+    
+    .demo-section {
+      margin: 40px 0;
+      padding: 20px;
+      border-radius: 10px;
+      background: #2a2a2a;
+    }
+    
+    pre {
+      background: #333;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    
+    code {
+      color: #00ff9d;
+    }
+    
+    .clock-container {
+      margin: 20px 0;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
+  <h1>Embeddable Clock Widget</h1>
+  
+  <div class="demo-section">
+    <h2>Default Clock (Cyber Green Theme)</h2>
+    <pre><code>&lt;div id="clock-widget-target"&gt;&lt;/div&gt;</code></pre>
+    <div class="clock-container">
+      <div id="clock-widget-target"></div>
+    </div>
+  </div>
 
-  <h1>Example Usage of Embeddable Clock</h1>
+  <div class="demo-section">
+    <h2>Neon Blue Theme with 24-hour Format</h2>
+    <pre><code>&lt;div id="clock-widget-target-2" 
+  data-theme="neon-blue"
+  data-format="24h"&gt;&lt;/div&gt;</code></pre>
+    <div class="clock-container">
+      <div id="clock-widget-target-2" data-theme="neon-blue" data-format="24h"></div>
+    </div>
+  </div>
 
-  <p>To embed the clock, add the following script tag to your HTML:</p>
-  <pre><code>&lt;script src="embeddable-clock.js" defer&gt;&lt;/script&gt;</code></pre>
+  <div class="demo-section">
+    <h2>Retro Red Theme (Large Size)</h2>
+    <pre><code>&lt;div id="clock-widget-target-3" 
+  data-theme="retro-red"
+  data-size="large"&gt;&lt;/div&gt;</code></pre>
+    <div class="clock-container">
+      <div id="clock-widget-target-3" data-theme="retro-red" data-size="large"></div>
+    </div>
+  </div>
 
-  <p>And add this div where you want the clock to appear:</p>
-  <pre><code>&lt;div id="clock-widget-target"&gt;&lt;/div&gt;</code></pre>
-
-  <hr>
-
-  <h2>Here's the clock embedded:</h2>
-  <div id="clock-widget-target"></div>
+  <div class="demo-section">
+    <h2>Minimal White Theme (No Seconds)</h2>
+    <pre><code>&lt;div id="clock-widget-target-4" 
+  data-theme="minimal-white"
+  data-show-seconds="false"
+  data-size="small"&gt;&lt;/div&gt;</code></pre>
+    <div class="clock-container">
+      <div id="clock-widget-target-4" data-theme="minimal-white" data-show-seconds="false" data-size="small"></div>
+    </div>
+  </div>
 
   <script src="embeddable-clock.js" defer></script>
-
 </body>
 </html>
