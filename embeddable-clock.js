@@ -43,7 +43,7 @@
 
   // CSS Styles with dynamic theme support
   const styles = `
-    .clock-widget-base {
+    .clock-widget {
       font-family: 'Orbitron', sans-serif;
       font-weight: bold;
       padding: 20px 40px;
@@ -58,7 +58,14 @@
       transition: all 0.3s ease;
     }
 
-    /* Theme-specific styles will be added dynamically */
+    .clock-widget span {
+      display: inline-block;
+      transition: opacity 0.3s ease;
+    }
+
+    .clock-widget.updating span {
+      opacity: 0.5;
+    }
     
     /* Size variations */
     .clock-size-small { font-size: ${sizes.small}; }
@@ -73,63 +80,91 @@
   styleSheet.innerText = styles;
   document.head.appendChild(styleSheet);
 
-  // Find the container element
-  const targetElement = document.getElementById('clock-widget-target');
-
-  if (targetElement) {
-    // Get configuration from data attributes
-    const config = {
-      theme: targetElement.dataset.theme || 'cyber-green',
-      format: targetElement.dataset.format || '12h',
-      showSeconds: targetElement.dataset.showSeconds !== 'false',
-      size: targetElement.dataset.size || 'medium'
-    };
-
-    // Create the clock display element
-    const clockElement = document.createElement('div');
-    clockElement.id = 'clock-widget-container';
-    clockElement.className = `clock-widget-base clock-size-${config.size}`;
-    
-    // Apply theme styles
-    const theme = themes[config.theme] || themes['cyber-green'];
-    Object.assign(clockElement.style, {
-      color: theme.color,
-      background: theme.background,
-      textShadow: theme.textShadow,
-      borderColor: theme.borderColor
-    });
-
-    targetElement.appendChild(clockElement);
-
-    // Clock update function with format support
-    function updateClock() {
-      const now = new Date();
-      const currentClockElement = document.getElementById('clock-widget-container');
+  // Clock class to handle individual instances
+  class ClockWidget {
+    constructor(element) {
+      this.container = element;
+      this.config = {
+        theme: element.dataset.theme || 'cyber-green',
+        format: element.dataset.format || '12h',
+        showSeconds: element.dataset.showSeconds !== 'false',
+        size: element.dataset.size || 'medium'
+      };
       
-      if (currentClockElement) {
-        let timeString;
-        const options = {
-          hour: 'numeric',
-          minute: '2-digit',
-          second: config.showSeconds ? '2-digit' : undefined,
-          hour12: config.format === '12h'
-        };
-        
-        timeString = now.toLocaleTimeString(undefined, options);
-        
-        // Remove seconds if not showing them
-        if (!config.showSeconds) {
-          timeString = timeString.replace(/:\d\d /, ' ').replace(/:\d\d$/, '');
-        }
-        
-        currentClockElement.textContent = timeString;
-      }
+      this.clockElement = document.createElement('div');
+      this.clockElement.className = `clock-widget clock-size-${this.config.size}`;
+      this.timeElement = document.createElement('span');
+      this.clockElement.appendChild(this.timeElement);
+      
+      this.applyTheme();
+      this.container.appendChild(this.clockElement);
+      
+      this.updateClock = this.updateClock.bind(this);
+      this.interval = setInterval(this.updateClock, 1000);
+      this.updateClock();
     }
 
-    // Set interval and initial call
-    setInterval(updateClock, 1000);
-    updateClock();
-  } else {
-    console.error('Embeddable Clock: Target element with id "clock-widget-target" not found.');
+    applyTheme() {
+      const theme = themes[this.config.theme] || themes['cyber-green'];
+      Object.assign(this.clockElement.style, {
+        color: theme.color,
+        background: theme.background,
+        textShadow: theme.textShadow,
+        borderColor: theme.borderColor
+      });
+    }
+
+    updateClock() {
+      const now = new Date();
+      this.clockElement.classList.add('updating');
+      
+      const options = {
+        hour: 'numeric',
+        minute: '2-digit',
+        second: this.config.showSeconds ? '2-digit' : undefined,
+        hour12: this.config.format === '12h'
+      };
+      
+      let timeString = now.toLocaleTimeString(undefined, options);
+      
+      // Remove seconds if not showing them
+      if (!this.config.showSeconds) {
+        timeString = timeString.replace(/:\d\d /, ' ').replace(/:\d\d$/, '');
+      }
+      
+      this.timeElement.textContent = timeString;
+      
+      // Remove updating class after transition
+      setTimeout(() => {
+        this.clockElement.classList.remove('updating');
+      }, 100);
+    }
+
+    destroy() {
+      clearInterval(this.interval);
+      this.clockElement.remove();
+    }
   }
+
+  // Initialize all clock widgets
+  function initClocks() {
+    const clockTargets = document.querySelectorAll('[id^="clock-widget-target"]');
+    clockTargets.forEach(target => new ClockWidget(target));
+  }
+
+  // Initialize clocks when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initClocks);
+  } else {
+    initClocks();
+  }
+
+  // Re-initialize when interactive clock is updated
+  window.updateClockWidget = function(element) {
+    const widget = element._clockWidget;
+    if (widget) {
+      widget.destroy();
+    }
+    element._clockWidget = new ClockWidget(element);
+  };
 })(); 
