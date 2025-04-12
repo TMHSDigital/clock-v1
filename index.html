@@ -1,23 +1,26 @@
+<!DOCTYPE html>
+<html>
 <head>
-  <title>Live Clock</title>
-  <style>
-    #clock {
-      font-size: 3rem;
-      font-family: monospace;
-      text-align: center;
-      margin-top: 20vh;
-    }
-  </style>
+  <title>Embeddable Clock Example</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-  <div id="clock"></div>
-  <script>
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('clock').textContent = now.toLocaleTimeString();
-    }
-    setInterval(updateClock, 1000);
-    updateClock(); // Initial call
-  </script>
+
+  <h1>Example Usage of Embeddable Clock</h1>
+
+  <p>To embed the clock, add the following script tag to your HTML:</p>
+  <pre><code>&lt;script src="embeddable-clock.js" defer&gt;&lt;/script&gt;</code></pre>
+
+  <p>And add this div where you want the clock to appear:</p>
+  <pre><code>&lt;div id="clock-widget-target"&gt;&lt;/div&gt;</code></pre>
+
+  <hr>
+
+  <h2>Here's the clock embedded:</h2>
+  <div id="clock-widget-target"></div>
+
+  <script src="embeddable-clock.js" defer></script>
+
 </body>
-</html
+</html>
