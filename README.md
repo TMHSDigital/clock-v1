@@ -7,7 +7,7 @@ Simple vanilla HTML, CSS, and JS clock that can be embedded into any website.
 1.  Add the following script tag to your HTML file, preferably just before the closing `</body>` tag:
 
     ```html
-    <script src="https://your-username.github.io/clock-v1/embeddable-clock.js" defer></script>
+    <script src="https://TMHSDigital.github.io/clock-v1/embeddable-clock.js" defer></script>
     ```
     *(Replace `your-username` with your actual GitHub username)*
 
@@ -21,7 +21,7 @@ That's it! The script will find the target div and inject the clock.
 
 ## Live Demo
 
-See the example usage on the [GitHub Pages site](https://your-username.github.io/clock-v1/).
+See the example usage on the [GitHub Pages site](https://TMHSDigital.github.io/clock-v1/).
 *(Replace `your-username` with your actual GitHub username)*
 
 ## Development
