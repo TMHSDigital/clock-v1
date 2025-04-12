@@ -45,6 +45,8 @@
       border: 1px solid rgba(51, 51, 51, 0.2);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
+      scroll-margin-top: 20px;
+      position: relative;
     }
     
     pre {
@@ -302,18 +304,194 @@
         padding: 15px;
       }
     }
+
+    .theme-nav {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(26, 26, 26, 0.8);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(51, 51, 51, 0.2);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .theme-nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .theme-nav-item {
+      font-size: 0.8rem;
+      position: relative;
+    }
+
+    .theme-nav-link {
+      color: rgba(153, 153, 153, 0.7);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      display: block;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .theme-nav-link:hover {
+      color: rgba(0, 255, 157, 0.9);
+      background: rgba(0, 255, 157, 0.1);
+    }
+
+    .theme-nav-link.active {
+      color: rgba(0, 255, 157, 1);
+      background: rgba(0, 255, 157, 0.15);
+    }
+
+    .theme-nav-link.active::before {
+      content: '';
+      position: absolute;
+      left: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(0, 255, 157, 1);
+      box-shadow: 0 0 8px rgba(0, 255, 157, 0.6);
+    }
+
+    /* Mobile navigation */
+    .theme-nav-mobile {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(26, 26, 26, 0.9);
+      padding: 10px;
+      border-radius: 25px;
+      border: 1px solid rgba(51, 51, 51, 0.2);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      white-space: nowrap;
+      overflow-x: auto;
+      max-width: 90vw;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .theme-nav-mobile::-webkit-scrollbar {
+      display: none;
+    }
+
+    .theme-nav-mobile .theme-nav-list {
+      flex-direction: row;
+      padding: 0 10px;
+    }
+
+    .theme-nav-mobile .theme-nav-link {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0, 255, 157, 0.15);
+      color: rgba(0, 255, 157, 0.9);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0, 255, 157, 0.2);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: rgba(0, 255, 157, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .back-to-top svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+    }
+
+    @media (max-width: 1200px) {
+      .theme-nav {
+        display: none;
+      }
+      .theme-nav-mobile {
+        display: block;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Embeddable Clock Widget</h1>
+  <h1 id="top">Embeddable Clock Widget</h1>
   
+  <nav class="theme-nav">
+    <ul class="theme-nav-list">
+      <li class="theme-nav-item"><a href="#cyber-green" class="theme-nav-link">Cyber Green</a></li>
+      <li class="theme-nav-item"><a href="#neon-blue" class="theme-nav-link">Neon Blue</a></li>
+      <li class="theme-nav-item"><a href="#retro-red" class="theme-nav-link">Retro Red</a></li>
+      <li class="theme-nav-item"><a href="#minimal-white" class="theme-nav-link">Minimal White</a></li>
+      <li class="theme-nav-item"><a href="#matrix" class="theme-nav-link">Matrix</a></li>
+      <li class="theme-nav-item"><a href="#vapor-wave" class="theme-nav-link">Vapor Wave</a></li>
+      <li class="theme-nav-item"><a href="#sunset" class="theme-nav-link">Sunset</a></li>
+      <li class="theme-nav-item"><a href="#synthwave" class="theme-nav-link">Synthwave</a></li>
+    </ul>
+  </nav>
+
+  <nav class="theme-nav-mobile">
+    <ul class="theme-nav-list">
+      <li class="theme-nav-item"><a href="#cyber-green" class="theme-nav-link">Cyber Green</a></li>
+      <li class="theme-nav-item"><a href="#neon-blue" class="theme-nav-link">Neon Blue</a></li>
+      <li class="theme-nav-item"><a href="#retro-red" class="theme-nav-link">Retro Red</a></li>
+      <li class="theme-nav-item"><a href="#minimal-white" class="theme-nav-link">Minimal White</a></li>
+      <li class="theme-nav-item"><a href="#matrix" class="theme-nav-link">Matrix</a></li>
+      <li class="theme-nav-item"><a href="#vapor-wave" class="theme-nav-link">Vapor Wave</a></li>
+      <li class="theme-nav-item"><a href="#sunset" class="theme-nav-link">Sunset</a></li>
+      <li class="theme-nav-item"><a href="#synthwave" class="theme-nav-link">Synthwave</a></li>
+    </ul>
+  </nav>
+
+  <button class="back-to-top" onclick="scrollToTop()" title="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+  </button>
+
   <div class="view-switcher">
     <button class="switch-button active" onclick="switchView('all')">Show All Styles</button>
     <button class="switch-button" onclick="switchView('interactive')">Interactive Demo</button>
   </div>
 
   <div id="all-styles">
-    <div class="demo-section">
+    <div id="cyber-green" class="demo-section">
       <h2>Default Clock (Cyber Green Theme)</h2>
       <pre><code>&lt;div id="clock-widget-target"&gt;&lt;/div&gt;</code></pre>
       <div class="clock-container">
@@ -321,7 +499,7 @@
       </div>
     </div>
 
-    <div class="demo-section">
+    <div id="neon-blue" class="demo-section">
       <h2>Neon Blue Theme with 24-hour Format</h2>
       <pre><code>&lt;div id="clock-widget-target-2" 
     data-theme="neon-blue"
@@ -331,7 +509,7 @@
       </div>
     </div>
 
-    <div class="demo-section">
+    <div id="retro-red" class="demo-section">
       <h2>Retro Red Theme (Large Size)</h2>
       <pre><code>&lt;div id="clock-widget-target-3" 
     data-theme="retro-red"
@@ -341,7 +519,7 @@
       </div>
     </div>
 
-    <div class="demo-section">
+    <div id="minimal-white" class="demo-section">
       <h2>Minimal White Theme (No Seconds)</h2>
       <pre><code>&lt;div id="clock-widget-target-4" 
     data-theme="minimal-white"
@@ -352,7 +530,7 @@
       </div>
     </div>
 
-    <div class="demo-section">
+    <div id="matrix" class="demo-section">
       <h2>Matrix Theme with Digital Rain Effect</h2>
       <pre><code>&lt;div id="clock-widget-target-5" 
     data-theme="matrix"
@@ -362,7 +540,7 @@
       </div>
     </div>
 
-    <div class="demo-section">
+    <div id="vapor-wave" class="demo-section">
       <h2>Vapor Wave Theme with Grid Pattern</h2>
       <pre><code>&lt;div id="clock-widget-target-6" 
     data-theme="vapor-wave"
@@ -372,7 +550,7 @@
       </div>
     </div>
 
-    <div class="demo-section">
+    <div id="sunset" class="demo-section">
       <h2>Sunset Theme with Warm Gradients</h2>
       <pre><code>&lt;div id="clock-widget-target-7" 
     data-theme="sunset"
@@ -383,7 +561,7 @@
       </div>
     </div>
 
-    <div class="demo-section">
+    <div id="synthwave" class="demo-section">
       <h2>Synthwave Theme with Perspective Grid</h2>
       <pre><code>&lt;div id="clock-widget-target-8" 
     data-theme="synthwave"
@@ -547,6 +725,57 @@
         }, 2000);
       });
     }
+
+    // Back to top functionality
+    window.addEventListener('scroll', () => {
+      const backToTop = document.querySelector('.back-to-top');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Intersection Observer for active nav items
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          document.querySelectorAll('.theme-nav-link').forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+          });
+        }
+      });
+    }, observerOptions);
+
+    // Observe all theme sections
+    document.querySelectorAll('.demo-section').forEach(section => {
+      observer.observe(section);
+    });
+
+    // Center active item in mobile nav
+    document.querySelectorAll('.theme-nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1200) {
+          const nav = document.querySelector('.theme-nav-mobile');
+          const item = e.target.parentElement;
+          nav.scrollLeft = item.offsetLeft - (nav.offsetWidth / 2) + (item.offsetWidth / 2);
+        }
+      });
+    });
   </script>
 </body>
 </html>
