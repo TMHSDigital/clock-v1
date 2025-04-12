@@ -1,43 +1,48 @@
-# Embeddable Clock Widget
+# Embeddable Clock Widget 🕒
 
-A customizable digital clock widget that can be embedded into any website. Features multiple themes, time formats, and size options with smooth transitions and a modern design.
+A modern, customizable clock widget that can be embedded into any webpage. Features smooth animations, multiple themes, and various display options.
 
-## Features
+## ✨ Features
 
-- 🎨 Multiple themes (Cyber Green, Neon Blue, Retro Red, Minimal White)
-- 📐 Four size options (Small to Extra Large)
-- 🕒 12/24 hour time format
-- ⚡ Smooth transitions and animations
-- 🎯 Multiple instances on the same page
-- 📱 Fully responsive design
+- 🎨 8 Beautiful Themes:
+  - Cyber Green (default): Futuristic green glow with dark gradient background
+  - Neon Blue: Electric blue digits with deep space background
+  - Retro Red: Warm red glow with dark contrast
+  - Minimal White: Clean white design with subtle shadows
+  - Matrix: Digital rain effect with bright green text
+  - Vapor Wave: Pink and purple gradient with retro grid pattern
+  - Sunset: Warm gradient background with pulsing glow
+  - Synthwave: Perspective grid with neon pink and cyan accents
+- 📏 Multiple sizes (small, medium, large, extra-large)
+- 🕐 12/24 hour time formats
+- ⚡ Smooth digit transitions and animations
+- 🔄 Multiple instances support
+- 📱 Responsive design
 
-## How to Use
+## 🚀 How to Use
 
-1. Add the following script tag to your HTML file, preferably just before the closing `</body>` tag:
+Add this to your HTML:
 
-    ```html
-    <script src="https://TMHSDigital.github.io/clock-v1/embeddable-clock.js" defer></script>
-    ```
+```html
+<div id="clock-widget-target"></div>
+<script src="embeddable-clock.js"></script>
+```
 
-2. Add a target div where you want the clock to appear:
-
-    ```html
-    <div id="clock-widget-target"></div>
-    ```
-
-## Customization Options
-
-You can customize the clock using data attributes:
+## ⚙️ Customization Options
 
 ### Themes
 ```html
 data-theme="theme-name"
 ```
 Available themes:
-- `cyber-green` (default) - Classic digital green with glow effect
-- `neon-blue` - Bright blue with cyberpunk feel
-- `retro-red` - Vintage LED display style
-- `minimal-white` - Clean, modern white display
+- `cyber-green`: Default theme with neon green text and dark gradient
+- `neon-blue`: Electric blue glow with space-like background
+- `retro-red`: Warm red glow with dark contrast
+- `minimal-white`: Clean white text with subtle effects
+- `matrix`: The Matrix inspired theme with digital rain effect
+- `vapor-wave`: Retro aesthetic with pink/purple gradient and grid
+- `sunset`: Dynamic warm gradients with pulsing glow
+- `synthwave`: 80s retro futurism with perspective grid
 
 ### Time Format
 ```html
