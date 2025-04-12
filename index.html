@@ -68,6 +68,62 @@
       border-radius: 10px;
     }
 
+    .view-switcher {
+      text-align: center;
+      margin: 2rem 0;
+    }
+    
+    .switch-button {
+      background: #333;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+    
+    .switch-button.active {
+      background: #00ff9d;
+      color: #000;
+      border-color: #00ff9d;
+    }
+
+    .control-panel {
+      background: #333;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .control-group {
+      margin: 15px 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .control-button {
+      background: #444;
+      color: #fff;
+      border: 1px solid #555;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .control-button.active {
+      background: #00ff9d;
+      color: #000;
+    }
+
+    #all-styles { display: block; }
+    #interactive-demo { display: none; }
+
     /* Responsive adjustments */
     @media (max-width: 600px) {
       body {
@@ -87,51 +143,163 @@
         padding: 15px;
         font-size: 0.8rem;
       }
+      
+      .control-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Embeddable Clock Widget</h1>
   
-  <div class="demo-section">
-    <h2>Default Clock (Cyber Green Theme)</h2>
-    <pre><code>&lt;div id="clock-widget-target"&gt;&lt;/div&gt;</code></pre>
-    <div class="clock-container">
-      <div id="clock-widget-target"></div>
+  <div class="view-switcher">
+    <button class="switch-button active" onclick="switchView('all')">Show All Styles</button>
+    <button class="switch-button" onclick="switchView('interactive')">Interactive Demo</button>
+  </div>
+
+  <div id="all-styles">
+    <div class="demo-section">
+      <h2>Default Clock (Cyber Green Theme)</h2>
+      <pre><code>&lt;div id="clock-widget-target"&gt;&lt;/div&gt;</code></pre>
+      <div class="clock-container">
+        <div id="clock-widget-target"></div>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Neon Blue Theme with 24-hour Format</h2>
+      <pre><code>&lt;div id="clock-widget-target-2" 
+    data-theme="neon-blue"
+    data-format="24h"&gt;&lt;/div&gt;</code></pre>
+      <div class="clock-container">
+        <div id="clock-widget-target-2" data-theme="neon-blue" data-format="24h"></div>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Retro Red Theme (Large Size)</h2>
+      <pre><code>&lt;div id="clock-widget-target-3" 
+    data-theme="retro-red"
+    data-size="large"&gt;&lt;/div&gt;</code></pre>
+      <div class="clock-container">
+        <div id="clock-widget-target-3" data-theme="retro-red" data-size="large"></div>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Minimal White Theme (No Seconds)</h2>
+      <pre><code>&lt;div id="clock-widget-target-4" 
+    data-theme="minimal-white"
+    data-show-seconds="false"
+    data-size="small"&gt;&lt;/div&gt;</code></pre>
+      <div class="clock-container">
+        <div id="clock-widget-target-4" data-theme="minimal-white" data-show-seconds="false" data-size="small"></div>
+      </div>
     </div>
   </div>
 
-  <div class="demo-section">
-    <h2>Neon Blue Theme with 24-hour Format</h2>
-    <pre><code>&lt;div id="clock-widget-target-2" 
-  data-theme="neon-blue"
-  data-format="24h"&gt;&lt;/div&gt;</code></pre>
-    <div class="clock-container">
-      <div id="clock-widget-target-2" data-theme="neon-blue" data-format="24h"></div>
+  <div id="interactive-demo" class="demo-section">
+    <h2>Interactive Demo</h2>
+    <div class="control-panel">
+      <div class="control-group">
+        <strong>Theme:</strong>
+        <button class="control-button active" onclick="updateClock('theme', 'cyber-green')">Cyber Green</button>
+        <button class="control-button" onclick="updateClock('theme', 'neon-blue')">Neon Blue</button>
+        <button class="control-button" onclick="updateClock('theme', 'retro-red')">Retro Red</button>
+        <button class="control-button" onclick="updateClock('theme', 'minimal-white')">Minimal White</button>
+      </div>
+      <div class="control-group">
+        <strong>Size:</strong>
+        <button class="control-button" onclick="updateClock('size', 'small')">Small</button>
+        <button class="control-button active" onclick="updateClock('size', 'medium')">Medium</button>
+        <button class="control-button" onclick="updateClock('size', 'large')">Large</button>
+        <button class="control-button" onclick="updateClock('size', 'extra-large')">Extra Large</button>
+      </div>
+      <div class="control-group">
+        <strong>Format:</strong>
+        <button class="control-button active" onclick="updateClock('format', '12h')">12-hour</button>
+        <button class="control-button" onclick="updateClock('format', '24h')">24-hour</button>
+        <button class="control-button active" onclick="updateClock('seconds', 'true')">Show Seconds</button>
+        <button class="control-button" onclick="updateClock('seconds', 'false')">Hide Seconds</button>
+      </div>
     </div>
-  </div>
-
-  <div class="demo-section">
-    <h2>Retro Red Theme (Large Size)</h2>
-    <pre><code>&lt;div id="clock-widget-target-3" 
-  data-theme="retro-red"
-  data-size="large"&gt;&lt;/div&gt;</code></pre>
     <div class="clock-container">
-      <div id="clock-widget-target-3" data-theme="retro-red" data-size="large"></div>
+      <div id="interactive-clock" data-theme="cyber-green" data-size="medium" data-format="12h" data-show-seconds="true"></div>
     </div>
-  </div>
-
-  <div class="demo-section">
-    <h2>Minimal White Theme (No Seconds)</h2>
-    <pre><code>&lt;div id="clock-widget-target-4" 
-  data-theme="minimal-white"
-  data-show-seconds="false"
-  data-size="small"&gt;&lt;/div&gt;</code></pre>
-    <div class="clock-container">
-      <div id="clock-widget-target-4" data-theme="minimal-white" data-show-seconds="false" data-size="small"></div>
-    </div>
+    <pre><code id="current-code">&lt;div id="clock-widget-target"&gt;&lt;/div&gt;</code></pre>
   </div>
 
   <script src="embeddable-clock.js" defer></script>
+  <script>
+    function switchView(view) {
+      const allStyles = document.getElementById('all-styles');
+      const interactiveDemo = document.getElementById('interactive-demo');
+      const buttons = document.querySelectorAll('.switch-button');
+      
+      if (view === 'all') {
+        allStyles.style.display = 'block';
+        interactiveDemo.style.display = 'none';
+        buttons[0].classList.add('active');
+        buttons[1].classList.remove('active');
+      } else {
+        allStyles.style.display = 'none';
+        interactiveDemo.style.display = 'block';
+        buttons[0].classList.remove('active');
+        buttons[1].classList.add('active');
+      }
+    }
+
+    function updateClock(property, value) {
+      const clock = document.getElementById('interactive-clock');
+      const buttons = event.target.parentElement.querySelectorAll('.control-button');
+      
+      // Update active button
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // Update clock attributes
+      switch(property) {
+        case 'theme':
+          clock.dataset.theme = value;
+          break;
+        case 'size':
+          clock.dataset.size = value;
+          break;
+        case 'format':
+          clock.dataset.format = value;
+          break;
+        case 'seconds':
+          clock.dataset.showSeconds = value;
+          break;
+      }
+      
+      // Update code preview
+      updateCodePreview();
+    }
+
+    function updateCodePreview() {
+      const clock = document.getElementById('interactive-clock');
+      const codePreview = document.getElementById('current-code');
+      let code = '<div id="clock-widget-target"\n';
+      
+      if (clock.dataset.theme !== 'cyber-green') {
+        code += '  data-theme="' + clock.dataset.theme + '"\n';
+      }
+      if (clock.dataset.size !== 'medium') {
+        code += '  data-size="' + clock.dataset.size + '"\n';
+      }
+      if (clock.dataset.format !== '12h') {
+        code += '  data-format="' + clock.dataset.format + '"\n';
+      }
+      if (clock.dataset.showSeconds !== 'true') {
+        code += '  data-show-seconds="' + clock.dataset.showSeconds + '"\n';
+      }
+      
+      code += '></div>';
+      codePreview.textContent = code;
+    }
+  </script>
 </body>
 </html>
