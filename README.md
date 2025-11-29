@@ -2,6 +2,10 @@
 
 A modern, customizable clock widget that can be embedded into any webpage. Features smooth animations, multiple themes, and various display options.
 
+<p align="center">
+  <img src="UI.png" alt="Embeddable Clock Widget UI" width="800" />
+</p>
+
 ## Features
 
 - 8 Beautiful Themes:
