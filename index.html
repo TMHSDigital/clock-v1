@@ -34,6 +34,9 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      position: relative;
+      /* Noise Texture */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
     }
 
     /* Typography */
@@ -60,7 +63,7 @@
     /* Header */
     header {
       padding: 2rem 0;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       background: rgba(15, 23, 42, 0.8);
       backdrop-filter: blur(12px);
       position: sticky;
@@ -121,6 +124,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 1rem;
+      text-shadow: 0 0 30px rgba(255,255,255,0.1);
     }
     
     .hero p {
@@ -163,12 +167,15 @@
       width: 100%;
     }
 
-    /* Panels */
+    /* Panels with Premium Glass Effect */
     .panel {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 16px;
       padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     }
 
     .controls-pane h3 {
@@ -191,7 +198,7 @@
       letter-spacing: 0.05em;
     }
 
-    /* UI Components */
+    /* Theme Buttons with Swatches */
     .theme-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -208,10 +215,21 @@
       font-size: 0.875rem;
       text-align: left;
       transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
     }
 
     .theme-btn:hover {
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.08);
     }
 
     .theme-btn.active {
@@ -226,6 +244,7 @@
       padding: 4px;
       border-radius: 8px;
       gap: 4px;
+      border: 1px solid rgba(255,255,255,0.05);
     }
 
     .segment-btn {
@@ -245,6 +264,7 @@
       background: var(--bg-tertiary);
       color: var(--text-primary);
       box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.05);
     }
 
     select.modern-select {
@@ -280,6 +300,7 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
     }
     
     /* Grid pattern for preview background */
@@ -332,7 +353,7 @@
     footer {
       text-align: center;
       padding: 2rem;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid rgba(255,255,255,0.05);
       color: var(--text-secondary);
       font-size: 0.875rem;
     }
@@ -376,14 +397,30 @@
         <div class="control-group">
           <label class="control-label">Theme</label>
           <div class="theme-grid">
-            <button class="theme-btn active" onclick="setOption('theme', 'cyber-green')">Cyber Green</button>
-            <button class="theme-btn" onclick="setOption('theme', 'neon-blue')">Neon Blue</button>
-            <button class="theme-btn" onclick="setOption('theme', 'retro-red')">Retro Red</button>
-            <button class="theme-btn" onclick="setOption('theme', 'minimal-white')">Minimal White</button>
-            <button class="theme-btn" onclick="setOption('theme', 'matrix')">Matrix</button>
-            <button class="theme-btn" onclick="setOption('theme', 'vapor-wave')">Vapor Wave</button>
-            <button class="theme-btn" onclick="setOption('theme', 'sunset')">Sunset</button>
-            <button class="theme-btn" onclick="setOption('theme', 'synthwave')">Synthwave</button>
+            <button class="theme-btn active" onclick="setOption('theme', 'cyber-green')">
+              <span class="theme-swatch" style="background: #0f0; box-shadow: 0 0 5px #0f0;"></span> Cyber Green
+            </button>
+            <button class="theme-btn" onclick="setOption('theme', 'neon-blue')">
+              <span class="theme-swatch" style="background: #00f7ff; box-shadow: 0 0 5px #00f7ff;"></span> Neon Blue
+            </button>
+            <button class="theme-btn" onclick="setOption('theme', 'retro-red')">
+              <span class="theme-swatch" style="background: #ff0043; box-shadow: 0 0 5px #ff0043;"></span> Retro Red
+            </button>
+            <button class="theme-btn" onclick="setOption('theme', 'minimal-white')">
+              <span class="theme-swatch" style="background: #fff; box-shadow: 0 0 5px #fff;"></span> Minimal
+            </button>
+            <button class="theme-btn" onclick="setOption('theme', 'matrix')">
+              <span class="theme-swatch" style="background: #00ff41;"></span> Matrix
+            </button>
+            <button class="theme-btn" onclick="setOption('theme', 'vapor-wave')">
+              <span class="theme-swatch" style="background: linear-gradient(45deg, #ff71ce, #01cdfe);"></span> Vapor
+            </button>
+            <button class="theme-btn" onclick="setOption('theme', 'sunset')">
+              <span class="theme-swatch" style="background: linear-gradient(to bottom, #ff6b6b, #feca57);"></span> Sunset
+            </button>
+            <button class="theme-btn" onclick="setOption('theme', 'synthwave')">
+              <span class="theme-swatch" style="background: linear-gradient(to bottom, #ff00ff, #00ffff);"></span> Synthwave
+            </button>
           </div>
         </div>
 
