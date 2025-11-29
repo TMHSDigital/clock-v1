@@ -67,7 +67,7 @@ data-show-seconds="true|false"
 data-size="size"
 ```
 Available sizes:
-- `small` (2rem)
+- `small` (1.5rem)
 - `medium` (3rem, default)
 - `large` (4rem)
 - `extra-large` (5rem)
@@ -111,18 +111,17 @@ You can customize the look completely using CSS variables in your own stylesheet
 </div>
 ```
 
-## Live Demo
+## Live Configurator
 
-Visit our [interactive demo page](https://TMHSDigital.github.io/clock-v1/) to:
-- See all available themes in action
-- Try different combinations of options
-- Get the exact code for your preferred configuration
-- Preview the clock in different sizes and formats
+Visit our [interactive configurator](https://TMHSDigital.github.io/clock-v1/) to:
+- **Design your clock**: Tweak themes, sizes, and formats in real-time.
+- **Copy & Paste**: Get the exact embed code for your customized widget.
+- **Responsive Preview**: Toggle between split-view and stacked layouts.
 
 ## Development
 
-- `index.html`: Interactive demo page with live configuration
-- `embeddable-clock.js`: Core widget code with themes and animations
+- `index.html`: Modern configurator UI for generating embed codes.
+- `embeddable-clock.js`: Core widget code with themes and animations.
 
 ## Technical Details
 
