@@ -116,7 +116,7 @@ You can customize the look completely using CSS variables in your own stylesheet
 Visit our [interactive configurator](https://TMHSDigital.github.io/clock-v1/) to:
 - **Design your clock**: Tweak themes, sizes, and formats in real-time.
 - **Copy & Paste**: Get the exact embed code for your customized widget.
-- **Responsive Preview**: Toggle between split-view and stacked layouts.
+- **Modern UI**: Experience the new split-screen design with responsive previews.
 
 ## Development
 
