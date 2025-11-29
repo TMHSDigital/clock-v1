@@ -1,10 +1,10 @@
-# Embeddable Clock Widget 🕒
+# Embeddable Clock Widget
 
 A modern, customizable clock widget that can be embedded into any webpage. Features smooth animations, multiple themes, and various display options.
 
-## ✨ Features
+## Features
 
-- 🎨 8 Beautiful Themes:
+- 8 Beautiful Themes:
   - Cyber Green (default): Futuristic green glow with dark gradient background
   - Neon Blue: Electric blue digits with deep space background
   - Retro Red: Warm red glow with dark contrast
@@ -13,45 +13,39 @@ A modern, customizable clock widget that can be embedded into any webpage. Featu
   - Vapor Wave: Pink and purple gradient with retro grid pattern
   - Sunset: Warm gradient background with pulsing glow
   - Synthwave: Perspective grid with neon pink and cyan accents
-- 📏 Multiple sizes (small, medium, large, extra-large)
-- 🕐 12/24 hour time formats
-- ⚡ Smooth digit transitions and animations
-- 🔄 Multiple instances support
-- 📱 Responsive design
+- Multiple sizes (small, medium, large, extra-large)
+- 12/24 hour time formats
+- Timezone support (IANA timezones)
+- Smooth digit transitions and animations
+- Accessible (ARIA support)
+- Responsive design
 
-## 🚀 How to Use
+## How to Use
 
 Add this to your HTML:
 
 ```html
-<div id="clock-widget-target"></div>
+<div class="embeddable-clock"></div>
 <script src="embeddable-clock.js"></script>
 ```
 
-## ⚙️ Customization Options
+(You can also use `id="clock-widget-target"` for legacy support).
 
-### Navigation Features
-The demo page includes convenient navigation features:
-- Desktop: Fixed sidebar navigation to quickly jump between themes
-- Mobile: Horizontal scrollable menu at the bottom of the screen
-- Back to top button appears when scrolling
-- Smooth scrolling animations
-- Visual indicators for current theme section
-- Automatic mobile/desktop layout switching
+## Customization Options
 
 ### Themes
 ```html
 data-theme="theme-name"
 ```
 Available themes:
-- `cyber-green`: Default theme with neon green text and dark gradient
-- `neon-blue`: Electric blue glow with space-like background
-- `retro-red`: Warm red glow with dark contrast
-- `minimal-white`: Clean white text with subtle effects
-- `matrix`: The Matrix inspired theme with digital rain effect
-- `vapor-wave`: Retro aesthetic with pink/purple gradient and grid
-- `sunset`: Dynamic warm gradients with pulsing glow
-- `synthwave`: 80s retro futurism with perspective grid
+- `cyber-green`
+- `neon-blue`
+- `retro-red`
+- `minimal-white`
+- `matrix`
+- `vapor-wave`
+- `sunset`
+- `synthwave`
 
 ### Time Format
 ```html
@@ -73,19 +67,47 @@ data-show-seconds="true|false"
 data-size="size"
 ```
 Available sizes:
-- `small` (2rem) - Compact display
-- `medium` (3rem, default) - Standard size
-- `large` (4rem) - Enhanced visibility
-- `extra-large` (5rem) - Maximum impact
+- `small` (2rem)
+- `medium` (3rem, default)
+- `large` (4rem)
+- `extra-large` (5rem)
+
+### Timezone
+```html
+data-timezone="Zone/City"
+```
+Use any valid IANA timezone string.
+Examples:
+- `America/New_York`
+- `Europe/London`
+- `Asia/Tokyo`
+- `UTC`
+
+If omitted or invalid, defaults to the user's local time.
+
+## Advanced Styling (CSS Variables)
+
+You can customize the look completely using CSS variables in your own stylesheet:
+
+```css
+.clock-widget {
+  --ec-color: #ff0000; /* Text Color */
+  --ec-bg: #000000;    /* Background */
+  --ec-border-color: #333;
+  --ec-text-shadow: 0 0 10px red;
+  --ec-font-family: 'Courier New', monospace;
+}
+```
 
 ## Example with All Options
 
 ```html
-<div id="clock-widget-target"
+<div class="embeddable-clock"
      data-theme="neon-blue"
      data-format="24h"
      data-show-seconds="false"
-     data-size="large">
+     data-size="large"
+     data-timezone="America/New_York">
 </div>
 ```
 
@@ -105,7 +127,8 @@ Visit our [interactive demo page](https://TMHSDigital.github.io/clock-v1/) to:
 ## Technical Details
 
 - Uses the Orbitron font for that perfect digital display look
-- Smooth transitions between updates
-- Efficient handling of multiple instances
+- Precision timing engine (self-correcting to 0ms offset)
+- Internationalization API for robust time handling
+- Accessible via ARIA roles and labels
 - No external dependencies
 - Lightweight and performance-optimized

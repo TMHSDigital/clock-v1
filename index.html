@@ -606,6 +606,22 @@
 
       <div class="control-group">
         <div class="control-group-header">
+          <strong>Timezone</strong>
+        </div>
+        <div class="control-buttons" style="display: block;">
+           <select id="timezone-select" onchange="updateClock('timezone', this.value)" style="width: 100%; padding: 12px; background: rgba(26, 26, 26, 0.4); color: rgba(153, 153, 153, 0.8); border: 1px solid rgba(51, 51, 51, 0.2); border-radius: 8px; cursor: pointer;">
+             <option value="">Local Time</option>
+             <option value="UTC">UTC</option>
+             <option value="America/New_York">New York (EST/EDT)</option>
+             <option value="Europe/London">London (GMT/BST)</option>
+             <option value="Asia/Tokyo">Tokyo (JST)</option>
+             <option value="Australia/Sydney">Sydney (AEST/AEDT)</option>
+           </select>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="control-group-header">
           <strong>Format</strong>
         </div>
         <div class="control-buttons">
@@ -678,6 +694,13 @@
         case 'seconds':
           clock.dataset.showSeconds = value;
           break;
+        case 'timezone':
+          if (value) {
+            clock.dataset.timezone = value;
+          } else {
+            delete clock.dataset.timezone;
+          }
+          break;
       }
       
       // Update the clock widget
@@ -703,6 +726,9 @@
       }
       if (clock.dataset.showSeconds !== 'true') {
         code += '  data-show-seconds="' + clock.dataset.showSeconds + '"\n';
+      }
+      if (clock.dataset.timezone) {
+        code += '  data-timezone="' + clock.dataset.timezone + '"\n';
       }
       
       code += '></div>';
