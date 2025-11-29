@@ -72,7 +72,7 @@
     }
 
     /* Size Variations */
-    .clock-size-small { font-size: 2rem; padding: 10px 20px; }
+    .clock-size-small { font-size: 1.5rem; padding: 10px 20px; }
     .clock-size-medium { font-size: 3rem; padding: 20px 40px; }
     .clock-size-large { font-size: 4rem; padding: 30px 50px; }
     .clock-size-extra-large { font-size: 5rem; padding: 40px 60px; }

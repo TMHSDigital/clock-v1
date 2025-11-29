@@ -1,807 +1,552 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Embeddable Clock Example</title>
+  <title>Embeddable Clock Widget</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-color: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --border-color: #334155;
+      --surface-glass: rgba(30, 41, 59, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #1a1a1a;
-      color: #fff;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
       line-height: 1.6;
-    }
-    
-    h1 {
-      color: #fff;
-      text-align: center;
-      font-size: 2.5rem;
-      margin: 2rem 0;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      background: linear-gradient(90deg, transparent, rgba(51, 51, 51, 0.2), transparent);
-      padding: 1rem;
-      border-radius: 12px;
-    }
-    
-    h2 {
-      color: rgba(0, 255, 157, 0.85);
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      letter-spacing: 0.03em;
-      opacity: 0.9;
-    }
-    
-    .demo-section {
-      margin: 40px 0;
-      padding: 30px;
-      border-radius: 16px;
-      background: rgba(32, 32, 32, 0.4);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-      border: 1px solid rgba(51, 51, 51, 0.2);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      scroll-margin-top: 20px;
-      position: relative;
-    }
-    
-    pre {
-      background: rgba(26, 26, 26, 0.4);
-      padding: 20px;
-      border-radius: 8px;
-      overflow-x: auto;
-      margin: 1.5rem 0;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(51, 51, 51, 0.15);
-    }
-    
-    code {
-      color: rgba(0, 255, 157, 0.8);
-      font-family: 'Monaco', 'Consolas', monospace;
-      font-size: 0.9rem;
-    }
-    
-    .clock-container {
-      margin: 30px 0;
-      text-align: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.02);
-      transition: background-color 0.3s ease;
-    }
-
-    .clock-container:hover {
-      background: rgba(0, 0, 0, 0.15);
-    }
-
-    .view-switcher {
-      text-align: center;
-      margin: 2rem 0;
-    }
-    
-    .switch-button {
-      background: rgba(32, 32, 32, 0.6);
-      color: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(51, 51, 51, 0.2);
-      padding: 10px 20px;
-      margin: 0 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 1rem;
-      -webkit-backdrop-filter: blur(5px);
-      backdrop-filter: blur(5px);
-    }
-    
-    .switch-button:hover {
-      background: rgba(38, 38, 38, 0.7);
-      border-color: rgba(51, 51, 51, 0.3);
-    }
-    
-    .switch-button.active {
-      background: rgba(0, 255, 157, 0.15);
-      color: rgba(0, 255, 157, 0.9);
-      border-color: rgba(0, 255, 157, 0.2);
-      box-shadow: 0 0 15px rgba(0, 255, 157, 0.1);
-    }
-
-    .control-panel {
-      background: rgba(28, 28, 28, 0.4);
-      padding: 40px;
-      border-radius: 16px;
-      margin: 30px 0;
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(51, 51, 51, 0.2);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-    }
-
-    .control-group {
-      margin: 35px 0;
-    }
-
-    .control-group:first-child {
-      margin-top: 0;
-    }
-
-    .control-group:last-child {
-      margin-bottom: 0;
-    }
-
-    .control-group-header {
+      min-height: 100vh;
       display: flex;
-      align-items: center;
-      margin-bottom: 20px;
+      flex-direction: column;
     }
 
-    .control-group-header strong {
-      font-size: 0.9rem;
-      color: rgba(153, 153, 153, 0.7);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+    /* Typography */
+    h1, h2, h3 {
+      font-weight: 700;
+      letter-spacing: -0.025em;
     }
 
-    .control-buttons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 8px;
+    a {
+      color: var(--accent-color);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    a:hover { color: var(--accent-hover); }
+
+    /* Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
       width: 100%;
     }
 
-    .control-button {
-      background: rgba(26, 26, 26, 0.4);
-      color: rgba(153, 153, 153, 0.8);
-      border: 1px solid rgba(51, 51, 51, 0.2);
-      padding: 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      -webkit-backdrop-filter: blur(5px);
-      backdrop-filter: blur(5px);
+    /* Header */
+    header {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
-
-    .control-button:hover {
-      background: rgba(32, 32, 32, 0.6);
-      color: rgba(255, 255, 255, 0.9);
-      border-color: rgba(51, 51, 51, 0.3);
-    }
-
-    .control-button.active {
-      background: rgba(0, 255, 157, 0.15);
-      color: rgba(0, 255, 157, 0.9);
-      border-color: rgba(0, 255, 157, 0.2);
-      font-weight: 600;
-      box-shadow: 0 0 15px rgba(0, 255, 157, 0.1);
-    }
-
-    /* Format group specific styling */
-    .control-group:last-child .control-buttons {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .preview-section {
-      background: rgba(26, 26, 26, 0.3);
-      padding: 40px;
-      border-radius: 12px;
-      margin: 30px 0;
-      text-align: center;
-      border: 1px solid rgba(51, 51, 51, 0.15);
-      -webkit-backdrop-filter: blur(5px);
-      backdrop-filter: blur(5px);
-    }
-
-    .preview-title {
-      color: rgba(153, 153, 153, 0.7);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 20px;
-      font-size: 0.9rem;
-    }
-
-    .code-preview {
-      background: rgba(26, 26, 26, 0.3);
-      padding: 25px;
-      border-radius: 8px;
-      margin: 30px 0;
-      border: 1px solid rgba(51, 51, 51, 0.15);
-      -webkit-backdrop-filter: blur(5px);
-      backdrop-filter: blur(5px);
-    }
-
-    .code-preview-header {
+    
+    .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
     }
 
-    .code-preview-title {
-      color: rgba(153, 153, 153, 0.7);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-size: 0.9rem;
-      text-align: left;
-    }
-
-    .copy-button {
-      background: rgba(0, 255, 157, 0.1);
-      color: rgba(0, 255, 157, 0.8);
-      border: 1px solid rgba(0, 255, 157, 0.2);
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      transition: all 0.2s ease;
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 0.5rem;
     }
 
-    .copy-button:hover {
-      background: rgba(0, 255, 157, 0.15);
-      border-color: rgba(0, 255, 157, 0.3);
-    }
-
-    .copy-button:active {
-      transform: scale(0.98);
-    }
-
-    .copy-button.copied {
-      background: rgba(0, 255, 157, 0.2);
-      color: rgba(0, 255, 157, 1);
-    }
-
-    .copy-button svg {
-      width: 14px;
-      height: 14px;
-      opacity: 0.8;
-    }
-
-    #all-styles { display: block; }
-    #interactive-demo { display: none; }
-
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-      body {
-        padding: 15px;
-      }
-      
-      h1 {
-        font-size: 2rem;
-      }
-      
-      .demo-section {
-        padding: 20px;
-        margin: 30px 0;
-      }
-      
-      pre {
-        padding: 15px;
-        font-size: 0.8rem;
-      }
-      
-      .control-panel {
-        padding: 25px;
-      }
-
-      .control-buttons {
-        grid-template-columns: 1fr !important;
-      }
-
-      .control-button {
-        width: 100%;
-        padding: 15px;
-      }
-    }
-
-    .theme-nav {
-      position: fixed;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(26, 26, 26, 0.8);
-      padding: 15px;
-      border-radius: 12px;
-      border: 1px solid rgba(51, 51, 51, 0.2);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .theme-nav-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .view-toggles {
       display: flex;
-      flex-direction: column;
-      gap: 8px;
+      background: var(--bg-secondary);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
     }
 
-    .theme-nav-item {
-      font-size: 0.8rem;
-      position: relative;
-    }
-
-    .theme-nav-link {
-      color: rgba(153, 153, 153, 0.7);
-      text-decoration: none;
+    .view-toggle-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
       padding: 6px 12px;
       border-radius: 6px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .view-toggle-btn.active {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 4rem 0;
+      text-align: center;
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      background: linear-gradient(to right, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Configurator */
+    .configurator {
+      flex: 1;
+      padding: 2rem 0;
+      transition: all 0.3s ease;
+    }
+
+    /* Split Layout Styles */
+    .layout-split .configurator-grid {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .layout-split .preview-pane {
+      position: sticky;
+      top: 100px;
+    }
+
+    /* Stacked Layout Styles */
+    .layout-stacked .configurator-grid {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .layout-stacked .controls-pane {
+      width: 100%;
+    }
+
+    /* Panels */
+    .panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+
+    .controls-pane h3 {
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+    }
+
+    .control-group {
+      margin-bottom: 2rem;
+    }
+    
+    .control-label {
       display: block;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-      position: relative;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
-    .theme-nav-link:hover {
-      color: rgba(0, 255, 157, 0.9);
-      background: rgba(0, 255, 157, 0.1);
+    /* UI Components */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
     }
 
-    .theme-nav-link.active {
-      color: rgba(0, 255, 157, 1);
-      background: rgba(0, 255, 157, 0.15);
+    .theme-btn {
+      background: var(--bg-tertiary);
+      border: 2px solid transparent;
+      color: var(--text-secondary);
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      text-align: left;
+      transition: all 0.2s;
     }
 
-    .theme-nav-link.active::before {
-      content: '';
-      position: absolute;
-      left: -15px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: rgba(0, 255, 157, 1);
-      box-shadow: 0 0 8px rgba(0, 255, 157, 0.6);
+    .theme-btn:hover {
+      background: rgba(255,255,255,0.05);
     }
 
-    /* Mobile navigation */
-    .theme-nav-mobile {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(26, 26, 26, 0.9);
-      padding: 10px;
-      border-radius: 25px;
-      border: 1px solid rgba(51, 51, 51, 0.2);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      white-space: nowrap;
-      overflow-x: auto;
-      max-width: 90vw;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
+    .theme-btn.active {
+      border-color: var(--accent-color);
+      color: var(--text-primary);
+      background: rgba(56, 189, 248, 0.1);
     }
 
-    .theme-nav-mobile::-webkit-scrollbar {
-      display: none;
+    .segment-control {
+      display: flex;
+      background: var(--bg-primary);
+      padding: 4px;
+      border-radius: 8px;
+      gap: 4px;
     }
 
-    .theme-nav-mobile .theme-nav-list {
-      flex-direction: row;
-      padding: 0 10px;
+    .segment-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
     }
 
-    .theme-nav-mobile .theme-nav-link {
-      padding: 8px 16px;
-      font-size: 0.9rem;
+    .segment-btn.active {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
 
-    .back-to-top {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0, 255, 157, 0.15);
-      color: rgba(0, 255, 157, 0.9);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+    select.modern-select {
+      width: 100%;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      cursor: pointer;
+      outline: none;
+    }
+    select.modern-select:focus {
+      border-color: var(--accent-color);
+    }
+
+    /* Preview Area */
+    .preview-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .preview-stage {
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      min-height: 400px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(0, 255, 157, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Grid pattern for preview background */
+    .preview-stage::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 20px 20px;
+      z-index: 0;
+    }
+
+    .code-block {
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .code-block pre {
+      color: #e6edf3;
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--bg-tertiary);
+      border: none;
+      color: var(--text-secondary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
       cursor: pointer;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      z-index: 100;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      background: var(--accent-color);
+      color: #fff;
     }
 
-    .back-to-top.visible {
-      opacity: 1;
-      visibility: visible;
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.875rem;
     }
 
-    .back-to-top:hover {
-      background: rgba(0, 255, 157, 0.2);
-      transform: translateY(-2px);
-    }
-
-    .back-to-top svg {
-      width: 20px;
-      height: 20px;
-      stroke: currentColor;
-    }
-
-    @media (max-width: 1200px) {
-      .theme-nav {
-        display: none;
+    @media (max-width: 768px) {
+      .layout-split .configurator-grid {
+        grid-template-columns: 1fr;
       }
-      .theme-nav-mobile {
-        display: block;
-      }
+      .hero h1 { font-size: 2.5rem; }
+      .header-content { flex-direction: column; gap: 1rem; }
     }
   </style>
 </head>
-<body>
-  <h1 id="top">Embeddable Clock Widget</h1>
-  
-  <nav class="theme-nav">
-    <ul class="theme-nav-list">
-      <li class="theme-nav-item"><a href="#cyber-green" class="theme-nav-link">Cyber Green</a></li>
-      <li class="theme-nav-item"><a href="#neon-blue" class="theme-nav-link">Neon Blue</a></li>
-      <li class="theme-nav-item"><a href="#retro-red" class="theme-nav-link">Retro Red</a></li>
-      <li class="theme-nav-item"><a href="#minimal-white" class="theme-nav-link">Minimal White</a></li>
-      <li class="theme-nav-item"><a href="#matrix" class="theme-nav-link">Matrix</a></li>
-      <li class="theme-nav-item"><a href="#vapor-wave" class="theme-nav-link">Vapor Wave</a></li>
-      <li class="theme-nav-item"><a href="#sunset" class="theme-nav-link">Sunset</a></li>
-      <li class="theme-nav-item"><a href="#synthwave" class="theme-nav-link">Synthwave</a></li>
-    </ul>
-  </nav>
+<body class="layout-split">
 
-  <nav class="theme-nav-mobile">
-    <ul class="theme-nav-list">
-      <li class="theme-nav-item"><a href="#cyber-green" class="theme-nav-link">Cyber Green</a></li>
-      <li class="theme-nav-item"><a href="#neon-blue" class="theme-nav-link">Neon Blue</a></li>
-      <li class="theme-nav-item"><a href="#retro-red" class="theme-nav-link">Retro Red</a></li>
-      <li class="theme-nav-item"><a href="#minimal-white" class="theme-nav-link">Minimal White</a></li>
-      <li class="theme-nav-item"><a href="#matrix" class="theme-nav-link">Matrix</a></li>
-      <li class="theme-nav-item"><a href="#vapor-wave" class="theme-nav-link">Vapor Wave</a></li>
-      <li class="theme-nav-item"><a href="#sunset" class="theme-nav-link">Sunset</a></li>
-      <li class="theme-nav-item"><a href="#synthwave" class="theme-nav-link">Synthwave</a></li>
-    </ul>
-  </nav>
+  <header>
+    <div class="container header-content">
+      <div class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        Embeddable Clock
+      </div>
+      <div class="view-toggles">
+        <button class="view-toggle-btn active" onclick="setLayout('split')">Split View</button>
+        <button class="view-toggle-btn" onclick="setLayout('stacked')">Stacked View</button>
+      </div>
+    </div>
+  </header>
 
-  <button class="back-to-top" onclick="scrollToTop()" title="Back to top">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-    </svg>
-  </button>
-
-  <div class="view-switcher">
-    <button class="switch-button active" onclick="switchView('all')">Show All Styles</button>
-    <button class="switch-button" onclick="switchView('interactive')">Interactive Demo</button>
+  <div class="container hero">
+    <h1>Time, Redefined.</h1>
+    <p>A modern, highly customizable clock widget for your web projects.</p>
   </div>
 
-  <div id="all-styles">
-    <div id="cyber-green" class="demo-section">
-      <h2>Default Clock (Cyber Green Theme)</h2>
-      <pre><code>&lt;div id="clock-widget-target"&gt;&lt;/div&gt;</code></pre>
-      <div class="clock-container">
-        <div id="clock-widget-target"></div>
-      </div>
-    </div>
+  <main class="container configurator">
+    <div class="configurator-grid">
+      
+      <!-- Left Panel: Controls -->
+      <div class="controls-pane panel">
+        <h3>Configuration</h3>
 
-    <div id="neon-blue" class="demo-section">
-      <h2>Neon Blue Theme with 24-hour Format</h2>
-      <pre><code>&lt;div id="clock-widget-target-2" 
-    data-theme="neon-blue"
-    data-format="24h"&gt;&lt;/div&gt;</code></pre>
-      <div class="clock-container">
-        <div id="clock-widget-target-2" data-theme="neon-blue" data-format="24h"></div>
-      </div>
-    </div>
-
-    <div id="retro-red" class="demo-section">
-      <h2>Retro Red Theme (Large Size)</h2>
-      <pre><code>&lt;div id="clock-widget-target-3" 
-    data-theme="retro-red"
-    data-size="large"&gt;&lt;/div&gt;</code></pre>
-      <div class="clock-container">
-        <div id="clock-widget-target-3" data-theme="retro-red" data-size="large"></div>
-      </div>
-    </div>
-
-    <div id="minimal-white" class="demo-section">
-      <h2>Minimal White Theme (No Seconds)</h2>
-      <pre><code>&lt;div id="clock-widget-target-4" 
-    data-theme="minimal-white"
-    data-show-seconds="false"
-    data-size="small"&gt;&lt;/div&gt;</code></pre>
-      <div class="clock-container">
-        <div id="clock-widget-target-4" data-theme="minimal-white" data-show-seconds="false" data-size="small"></div>
-      </div>
-    </div>
-
-    <div id="matrix" class="demo-section">
-      <h2>Matrix Theme with Digital Rain Effect</h2>
-      <pre><code>&lt;div id="clock-widget-target-5" 
-    data-theme="matrix"
-    data-size="large"&gt;&lt;/div&gt;</code></pre>
-      <div class="clock-container">
-        <div id="clock-widget-target-5" data-theme="matrix" data-size="large"></div>
-      </div>
-    </div>
-
-    <div id="vapor-wave" class="demo-section">
-      <h2>Vapor Wave Theme with Grid Pattern</h2>
-      <pre><code>&lt;div id="clock-widget-target-6" 
-    data-theme="vapor-wave"
-    data-size="medium"&gt;&lt;/div&gt;</code></pre>
-      <div class="clock-container">
-        <div id="clock-widget-target-6" data-theme="vapor-wave" data-size="medium"></div>
-      </div>
-    </div>
-
-    <div id="sunset" class="demo-section">
-      <h2>Sunset Theme with Warm Gradients</h2>
-      <pre><code>&lt;div id="clock-widget-target-7" 
-    data-theme="sunset"
-    data-format="24h"
-    data-size="large"&gt;&lt;/div&gt;</code></pre>
-      <div class="clock-container">
-        <div id="clock-widget-target-7" data-theme="sunset" data-format="24h" data-size="large"></div>
-      </div>
-    </div>
-
-    <div id="synthwave" class="demo-section">
-      <h2>Synthwave Theme with Perspective Grid</h2>
-      <pre><code>&lt;div id="clock-widget-target-8" 
-    data-theme="synthwave"
-    data-size="extra-large"&gt;&lt;/div&gt;</code></pre>
-      <div class="clock-container">
-        <div id="clock-widget-target-8" data-theme="synthwave" data-size="extra-large"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="interactive-demo" class="demo-section">
-    <h2>Interactive Demo</h2>
-    
-    <div class="control-panel">
-      <div class="control-group">
-        <div class="control-group-header">
-          <strong>Theme</strong>
+        <div class="control-group">
+          <label class="control-label">Theme</label>
+          <div class="theme-grid">
+            <button class="theme-btn active" onclick="setOption('theme', 'cyber-green')">Cyber Green</button>
+            <button class="theme-btn" onclick="setOption('theme', 'neon-blue')">Neon Blue</button>
+            <button class="theme-btn" onclick="setOption('theme', 'retro-red')">Retro Red</button>
+            <button class="theme-btn" onclick="setOption('theme', 'minimal-white')">Minimal White</button>
+            <button class="theme-btn" onclick="setOption('theme', 'matrix')">Matrix</button>
+            <button class="theme-btn" onclick="setOption('theme', 'vapor-wave')">Vapor Wave</button>
+            <button class="theme-btn" onclick="setOption('theme', 'sunset')">Sunset</button>
+            <button class="theme-btn" onclick="setOption('theme', 'synthwave')">Synthwave</button>
+          </div>
         </div>
-        <div class="control-buttons">
-          <button class="control-button active" onclick="updateClock('theme', 'cyber-green')">Cyber Green</button>
-          <button class="control-button" onclick="updateClock('theme', 'neon-blue')">Neon Blue</button>
-          <button class="control-button" onclick="updateClock('theme', 'retro-red')">Retro Red</button>
-          <button class="control-button" onclick="updateClock('theme', 'minimal-white')">Minimal</button>
-          <button class="control-button" onclick="updateClock('theme', 'matrix')">Matrix</button>
-          <button class="control-button" onclick="updateClock('theme', 'vapor-wave')">Vapor Wave</button>
-          <button class="control-button" onclick="updateClock('theme', 'sunset')">Sunset</button>
-          <button class="control-button" onclick="updateClock('theme', 'synthwave')">Synthwave</button>
-        </div>
-      </div>
 
-      <div class="control-group">
-        <div class="control-group-header">
-          <strong>Size</strong>
+        <div class="control-group">
+          <label class="control-label">Size</label>
+          <div class="segment-control">
+            <button class="segment-btn" onclick="setOption('size', 'small')">Small</button>
+            <button class="segment-btn active" onclick="setOption('size', 'medium')">Medium</button>
+            <button class="segment-btn" onclick="setOption('size', 'large')">Large</button>
+            <button class="segment-btn" onclick="setOption('size', 'extra-large')">XL</button>
+          </div>
         </div>
-        <div class="control-buttons">
-          <button class="control-button" onclick="updateClock('size', 'small')">Small</button>
-          <button class="control-button active" onclick="updateClock('size', 'medium')">Medium</button>
-          <button class="control-button" onclick="updateClock('size', 'large')">Large</button>
-          <button class="control-button" onclick="updateClock('size', 'extra-large')">Extra Large</button>
-        </div>
-      </div>
 
-      <div class="control-group">
-        <div class="control-group-header">
-          <strong>Timezone</strong>
+        <div class="control-group">
+          <label class="control-label">Format</label>
+          <div class="segment-control">
+            <button class="segment-btn active" onclick="setOption('format', '12h')">12-Hour</button>
+            <button class="segment-btn" onclick="setOption('format', '24h')">24-Hour</button>
+          </div>
         </div>
-        <div class="control-buttons" style="display: block;">
-           <select id="timezone-select" onchange="updateClock('timezone', this.value)" style="width: 100%; padding: 12px; background: rgba(26, 26, 26, 0.4); color: rgba(153, 153, 153, 0.8); border: 1px solid rgba(51, 51, 51, 0.2); border-radius: 8px; cursor: pointer;">
-             <option value="">Local Time</option>
+
+        <div class="control-group">
+          <label class="control-label">Seconds</label>
+          <div class="segment-control">
+            <button class="segment-btn active" onclick="setOption('showSeconds', 'true')">Show</button>
+            <button class="segment-btn" onclick="setOption('showSeconds', 'false')">Hide</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Timezone</label>
+          <select class="modern-select" onchange="setOption('timezone', this.value)">
+             <option value="">Local Time (Default)</option>
              <option value="UTC">UTC</option>
              <option value="America/New_York">New York (EST/EDT)</option>
              <option value="Europe/London">London (GMT/BST)</option>
              <option value="Asia/Tokyo">Tokyo (JST)</option>
              <option value="Australia/Sydney">Sydney (AEST/AEDT)</option>
-           </select>
+             <option value="America/Los_Angeles">Los Angeles (PST/PDT)</option>
+          </select>
         </div>
       </div>
 
-      <div class="control-group">
-        <div class="control-group-header">
-          <strong>Format</strong>
+      <!-- Right Panel: Preview -->
+      <div class="preview-pane">
+        <div class="preview-stage">
+          <div id="interactive-clock" 
+               data-theme="cyber-green" 
+               data-size="medium" 
+               data-format="12h" 
+               data-show-seconds="true"></div>
         </div>
-        <div class="control-buttons">
-          <button class="control-button active" onclick="updateClock('format', '12h')">12-hour</button>
-          <button class="control-button" onclick="updateClock('format', '24h')">24-hour</button>
-          <button class="control-button active" onclick="updateClock('seconds', 'true')">Show Seconds</button>
-          <button class="control-button" onclick="updateClock('seconds', 'false')">Hide Seconds</button>
+
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode()">Copy HTML</button>
+          <pre><code id="embed-code"></code></pre>
         </div>
       </div>
-    </div>
 
-    <div class="preview-section">
-      <div class="preview-title">LIVE PREVIEW</div>
-      <div id="interactive-clock" data-theme="cyber-green" data-size="medium" data-format="12h" data-show-seconds="true"></div>
     </div>
+  </main>
 
-    <div class="code-preview">
-      <div class="code-preview-header">
-        <div class="code-preview-title">EMBED CODE</div>
-        <button class="copy-button" onclick="copyEmbedCode()">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-          <span>Copy</span>
-        </button>
-      </div>
-      <pre><code id="current-code">&lt;div id="clock-widget-target"&gt;&lt;/div&gt;</code></pre>
-    </div>
-  </div>
+  <footer>
+    <p>© 2024 Embeddable Clock Widget. Open Source.</p>
+  </footer>
 
-  <script src="embeddable-clock.js" defer></script>
+  <script src="embeddable-clock.js"></script>
   <script>
-    function switchView(view) {
-      const allStyles = document.getElementById('all-styles');
-      const interactiveDemo = document.getElementById('interactive-demo');
-      const buttons = document.querySelectorAll('.switch-button');
+    // State Management
+    const state = {
+      theme: 'cyber-green',
+      size: 'medium',
+      format: '12h',
+      showSeconds: 'true',
+      timezone: ''
+    };
+
+    function setLayout(layoutName) {
+      document.body.className = `layout-${layoutName}`;
       
-      if (view === 'all') {
-        allStyles.style.display = 'block';
-        interactiveDemo.style.display = 'none';
-        buttons[0].classList.add('active');
-        buttons[1].classList.remove('active');
+      // Update toggle buttons
+      document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase().includes(layoutName));
+      });
+    }
+
+    function setOption(key, value) {
+      state[key] = value;
+      
+      // Update UI buttons
+      if (key !== 'timezone') {
+        // Find the group (assumes structure: control-group -> div -> buttons)
+        // This is a bit loose but works for this specific DOM structure
+        const buttons = document.querySelectorAll(`button[onclick*="'${key}'"]`);
+        buttons.forEach(btn => {
+          // Check if this button corresponds to the value we just set
+          const isMatch = btn.getAttribute('onclick').includes(`'${value}'`);
+          btn.classList.toggle('active', isMatch);
+        });
+      }
+
+      updateClock();
+    }
+
+    function updateClock() {
+      const clock = document.getElementById('interactive-clock');
+      const codeBlock = document.getElementById('embed-code');
+
+      // Update DOM attributes
+      clock.dataset.theme = state.theme;
+      clock.dataset.size = state.size;
+      clock.dataset.format = state.format;
+      clock.dataset.showSeconds = state.showSeconds;
+      
+      if (state.timezone) {
+        clock.dataset.timezone = state.timezone;
       } else {
-        allStyles.style.display = 'none';
-        interactiveDemo.style.display = 'block';
-        buttons[0].classList.remove('active');
-        buttons[1].classList.add('active');
+        delete clock.dataset.timezone;
       }
+
+      // Trigger widget update
+      if (window.updateClockWidget) {
+        window.updateClockWidget(clock);
+      }
+
+      // Generate Embed Code
+      let html = `<div class="embeddable-clock"
+     data-theme="${state.theme}"
+     data-size="${state.size}"
+     data-format="${state.format}"`;
+
+      if (state.showSeconds === 'false') {
+        html += `\n     data-show-seconds="false"`;
+      }
+      
+      if (state.timezone) {
+        html += `\n     data-timezone="${state.timezone}"`;
+      }
+
+      html += `></div>\n<script src="embeddable-clock.js"><\/script>`;
+      
+      codeBlock.textContent = html;
     }
 
-    function updateClock(property, value) {
-      const clock = document.getElementById('interactive-clock');
-      const buttons = event.target.parentElement.querySelectorAll('.control-button');
-      
-      // Update active button
-      buttons.forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      
-      // Update clock attributes
-      switch(property) {
-        case 'theme':
-          clock.dataset.theme = value;
-          break;
-        case 'size':
-          clock.dataset.size = value;
-          break;
-        case 'format':
-          clock.dataset.format = value;
-          break;
-        case 'seconds':
-          clock.dataset.showSeconds = value;
-          break;
-        case 'timezone':
-          if (value) {
-            clock.dataset.timezone = value;
-          } else {
-            delete clock.dataset.timezone;
-          }
-          break;
-      }
-      
-      // Update the clock widget
-      window.updateClockWidget(clock);
-      
-      // Update code preview
-      updateCodePreview();
-    }
-
-    function updateCodePreview() {
-      const clock = document.getElementById('interactive-clock');
-      const codePreview = document.getElementById('current-code');
-      let code = '<div id="clock-widget-target"\n';
-      
-      if (clock.dataset.theme !== 'cyber-green') {
-        code += '  data-theme="' + clock.dataset.theme + '"\n';
-      }
-      if (clock.dataset.size !== 'medium') {
-        code += '  data-size="' + clock.dataset.size + '"\n';
-      }
-      if (clock.dataset.format !== '12h') {
-        code += '  data-format="' + clock.dataset.format + '"\n';
-      }
-      if (clock.dataset.showSeconds !== 'true') {
-        code += '  data-show-seconds="' + clock.dataset.showSeconds + '"\n';
-      }
-      if (clock.dataset.timezone) {
-        code += '  data-timezone="' + clock.dataset.timezone + '"\n';
-      }
-      
-      code += '></div>';
-      codePreview.textContent = code;
-    }
-
-    function copyEmbedCode() {
-      const codeText = document.getElementById('current-code').textContent;
-      navigator.clipboard.writeText(codeText).then(() => {
-        const copyButton = document.querySelector('.copy-button');
-        const buttonText = copyButton.querySelector('span');
-        const originalText = buttonText.textContent;
-        
-        copyButton.classList.add('copied');
-        buttonText.textContent = 'Copied!';
+    function copyCode() {
+      const code = document.getElementById('embed-code').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        const originalText = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.style.background = '#22c55e';
+        btn.style.color = '#fff';
         
         setTimeout(() => {
-          copyButton.classList.remove('copied');
-          buttonText.textContent = originalText;
+          btn.textContent = originalText;
+          btn.style.background = '';
+          btn.style.color = '';
         }, 2000);
       });
     }
 
-    // Back to top functionality
-    window.addEventListener('scroll', () => {
-      const backToTop = document.querySelector('.back-to-top');
-      if (window.scrollY > 300) {
-        backToTop.classList.add('visible');
-      } else {
-        backToTop.classList.remove('visible');
-      }
-    });
-
-    function scrollToTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
-
-    // Intersection Observer for active nav items
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          document.querySelectorAll('.theme-nav-link').forEach(link => {
-            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
-          });
-        }
-      });
-    }, observerOptions);
-
-    // Observe all theme sections
-    document.querySelectorAll('.demo-section').forEach(section => {
-      observer.observe(section);
-    });
-
-    // Center active item in mobile nav
-    document.querySelectorAll('.theme-nav-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        if (window.innerWidth <= 1200) {
-          const nav = document.querySelector('.theme-nav-mobile');
-          const item = e.target.parentElement;
-          nav.scrollLeft = item.offsetLeft - (nav.offsetWidth / 2) + (item.offsetWidth / 2);
-        }
-      });
-    });
+    // Initial Render
+    updateClock();
   </script>
 </body>
 </html>
